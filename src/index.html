@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
     <title>WAI-ARIA</title>
   </head>
   <body>
     <!-- WAI-ARIA を利用したUIコンポーネント集 -->
     <!-- accordion -->
     <div class="accordion js-accordion" role="tablist">
-      <div class="accordion-item">
+      <div class="accordion-item" role="presentation">
         <h3
           class="accordion-header js-accordion-header"
           role="tab"
@@ -29,7 +30,7 @@
           <p>アコーディオン1の内容が入ります。</p>
         </div>
       </div>
-      <div class="accordion-item">
+      <div class="accordion-item" role="presentation">
         <h3
           class="accordion-header js-accordion-header"
           role="tab"
