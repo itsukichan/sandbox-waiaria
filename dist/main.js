@@ -517,8 +517,32 @@ var Accordion = /*#__PURE__*/function () {
           var panel = header.nextElementSibling;
           panel.setAttribute("id", panelId);
           panel.setAttribute("aria-labelledby", headerId);
-          header.addEventListener("click", function () {
-            return _this.toggle(header);
+          header.addEventListener("click", function (event) {
+            event.preventDefault();
+            _this.toggle(header);
+          });
+
+          // Handle keyboard events
+          header.addEventListener("keydown", function (event) {
+            switch (event.key) {
+              case "ArrowDown":
+              case "ArrowRight":
+                _this.focusNextHeader(header);
+                event.preventDefault();
+                break;
+              case "ArrowUp":
+              case "ArrowLeft":
+                _this.focusPrevHeader(header);
+                event.preventDefault();
+                break;
+              case "Enter":
+              case " ":
+                event.preventDefault();
+                _this.toggle(header);
+                break;
+              default:
+                break;
+            }
           });
         });
       });
@@ -540,6 +564,30 @@ var Accordion = /*#__PURE__*/function () {
         var panel = document.getElementById(header.getAttribute("aria-controls"));
         panel.removeAttribute("hidden");
         panel.setAttribute("aria-hidden", "false");
+      }
+    }
+  }, {
+    key: "focusNextHeader",
+    value: function focusNextHeader(currentHeader) {
+      var accordion = currentHeader.parentElement;
+      var accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
+      var currentIndex = Array.from(accordionHeaders).indexOf(currentHeader);
+      if (currentIndex === accordionHeaders.length - 1) {
+        accordionHeaders[0].focus();
+      } else {
+        accordionHeaders[currentIndex + 1].focus();
+      }
+    }
+  }, {
+    key: "focusPrevHeader",
+    value: function focusPrevHeader(currentHeader) {
+      var accordion = currentHeader.parentElement;
+      var accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
+      var currentIndex = Array.from(accordionHeaders).indexOf(currentHeader);
+      if (currentIndex === 0) {
+        accordionHeaders[accordionHeaders.length - 1].focus();
+      } else {
+        accordionHeaders[currentIndex - 1].focus();
       }
     }
   }]);
