@@ -22,7 +22,33 @@ export default class Accordion {
         panel.setAttribute("id", panelId);
         panel.setAttribute("aria-labelledby", headerId);
 
-        header.addEventListener("click", () => this.toggle(header));
+        header.addEventListener("click", (event) => {
+          event.preventDefault();
+          this.toggle(header);
+        });
+
+        // Handle keyboard events
+        header.addEventListener("keydown", (event) => {
+          switch (event.key) {
+            case "ArrowDown":
+            case "ArrowRight":
+              this.focusNextHeader(header);
+              event.preventDefault();
+              break;
+            case "ArrowUp":
+            case "ArrowLeft":
+              this.focusPrevHeader(header);
+              event.preventDefault();
+              break;
+            case "Enter":
+            case " ":
+              event.preventDefault();
+              this.toggle(header);
+              break;
+            default:
+              break;
+          }
+        });
       });
     });
   }
@@ -48,6 +74,30 @@ export default class Accordion {
       );
       panel.removeAttribute("hidden");
       panel.setAttribute("aria-hidden", "false");
+    }
+  }
+
+  focusNextHeader(currentHeader) {
+    const accordion = currentHeader.parentElement;
+    const accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
+    const currentIndex = Array.from(accordionHeaders).indexOf(currentHeader);
+
+    if (currentIndex === accordionHeaders.length - 1) {
+      accordionHeaders[0].focus();
+    } else {
+      accordionHeaders[currentIndex + 1].focus();
+    }
+  }
+
+  focusPrevHeader(currentHeader) {
+    const accordion = currentHeader.parentElement;
+    const accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
+    const currentIndex = Array.from(accordionHeaders).indexOf(currentHeader);
+
+    if (currentIndex === 0) {
+      accordionHeaders[accordionHeaders.length - 1].focus();
+    } else {
+      accordionHeaders[currentIndex - 1].focus();
     }
   }
 }

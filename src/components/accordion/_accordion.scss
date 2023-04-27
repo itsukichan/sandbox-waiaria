@@ -47,13 +47,17 @@
   border-top: 1px solid #ccc;
   display: none;
   padding: 16px;
+  margin-top: 0;
 }
 
 .accordion-panel[aria-hidden="false"] {
   display: block;
 }
 
-/* 追加：最初のアコーディオンのヘッダーの上部にはボーダーを表示しない */
 .accordion>.accordion-header:first-child {
   border-top: none;
+}
+
+.accordion>.accordion-item:last-child .accordion-panel {
+  border-bottom: none;
 }
