@@ -1,7 +1,5 @@
 # sandbox-waiaria
 
-TREE
-
 ```
 sandbox-waiaria
 ├─ .gitignore
@@ -26,5 +24,4 @@ sandbox-waiaria
 ├─ webpack.common.js
 ├─ webpack.dev.js
 └─ webpack.prod.js
-
 ```

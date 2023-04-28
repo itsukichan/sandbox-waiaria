@@ -521,8 +521,6 @@ var Accordion = /*#__PURE__*/function () {
             event.preventDefault();
             _this.toggle(header);
           });
-
-          // Handle keyboard events
           header.addEventListener("keydown", function (event) {
             switch (event.key) {
               case "ArrowDown":
@@ -597,7 +595,10 @@ var Accordion = /*#__PURE__*/function () {
 ;// CONCATENATED MODULE: ./src/index.js
 
 
+// import Tab from "./components/tab/_tab.js";
+
 new Accordion(".js-accordion");
+// new Tab(".js-tabList");
 })();
 
 /******/ })()

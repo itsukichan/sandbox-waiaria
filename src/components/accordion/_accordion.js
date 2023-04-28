@@ -27,7 +27,6 @@ export default class Accordion {
           this.toggle(header);
         });
 
-        // Handle keyboard events
         header.addEventListener("keydown", (event) => {
           switch (event.key) {
             case "ArrowDown":
