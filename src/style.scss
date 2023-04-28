@@ -1,2 +1,12 @@
-// accordion呼び出し
+@import "utils/reset";
+@import "utils/base";
+
+// components
 @import "components/accordion/accordion";
+
+
+
+
+.component-accordion {
+    padding: 100px 0;
+}

@@ -1,0 +1,82 @@
+// header
+.header {
+    background-color: #333;
+    color: #fff;
+
+    .heading {
+        max-width: 1000px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+}
+
+// mainContent
+.mainContent {}
+
+// footer
+.footer {
+    background-color: #333;
+    color: #fff;
+
+    .copy {
+        padding: 15px 10px;
+        font-size: 12px;
+        text-align: center;
+
+        small {
+            line-height: 1;
+            font-size: .8em;
+        }
+    }
+}
+
+// Utils
+div[scheme-theme="gray"] {
+    background-color: #ccc;
+    color: #333;
+}
+
+div[scheme-theme="white"] {
+    background-color: #fff;
+    color: #333;
+}
+
+.heading {
+    font-size: 28px;
+    line-height: 1.6;
+}
+
+.txt {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.componentSect {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+
+
+    &__head {
+        padding-bottom: 40px;
+
+        .heading {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+
+            &::before {
+                content: "";
+                display: block;
+                background-color: #333;
+                width: 5px;
+                height: 1em;
+                margin-right: .25em;
+            }
+        }
+    }
+
+    &__cont {}
+}

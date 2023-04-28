@@ -1,63 +1,63 @@
-.accordion {
+.accordionList {
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+
+  &>.accordion:last-child .accordion__cont {
+    border-bottom: none;
+  }
 }
 
-.accordion-header {
-  background-color: #f5f5f5;
-  border-top: 1px solid #ccc;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 12px 16px;
-  position: relative;
-  text-align: left;
-}
+.accordion {
 
-.accordion-header:hover {
-  background-color: #e0e0e0;
-}
+  &>.accordion__head:first-child {
+    border-top: none;
+  }
 
-.accordion-header:focus {
-  outline: none;
-  background-color: #e0e0e0;
-}
+  &__head {
+    background-color: #f5f5f5;
+    border-top: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 16px;
+    position: relative;
+    text-align: left;
 
-.accordion-header[aria-expanded="true"]::after {
-  content: "-";
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-}
+    &:hover {
+      background-color: #e0e0e0;
+    }
 
-.accordion-header[aria-expanded="false"]::after {
-  content: "+";
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-}
+    &:focus {
+      outline: none;
+      background-color: #e0e0e0;
+    }
 
-.accordion-panel {
-  background-color: #fff;
-  border-top: 1px solid #ccc;
-  display: none;
-  padding: 16px;
-  margin-top: 0;
-}
+    &[aria-expanded="true"]::after {
+      content: "-";
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+    }
 
-.accordion-panel[aria-hidden="false"] {
-  display: block;
-}
+    &[aria-expanded="false"]::after {
+      content: "+";
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+    }
+  }
 
-.accordion>.accordion-header:first-child {
-  border-top: none;
-}
+  &__cont {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    display: none;
+    padding: 16px;
+    margin-top: 0;
 
-.accordion>.accordion-item:last-child .accordion-panel {
-  border-bottom: none;
+    &[aria-hidden="false"] {
+      display: block;
+    }
+  }
 }
