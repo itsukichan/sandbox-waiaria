@@ -635,7 +635,115 @@ var Tab = /*#__PURE__*/function () {
   return Tab;
 }();
 
+;// CONCATENATED MODULE: ./src/components/modal/_modal.js
+function _modal_typeof(obj) { "@babel/helpers - typeof"; return _modal_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _modal_typeof(obj); }
+function _modal_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _modal_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _modal_toPropertyKey(descriptor.key), descriptor); } }
+function _modal_createClass(Constructor, protoProps, staticProps) { if (protoProps) _modal_defineProperties(Constructor.prototype, protoProps); if (staticProps) _modal_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _modal_toPropertyKey(arg) { var key = _modal_toPrimitive(arg, "string"); return _modal_typeof(key) === "symbol" ? key : String(key); }
+function _modal_toPrimitive(input, hint) { if (_modal_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_modal_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var Modal = /*#__PURE__*/function () {
+  function Modal(selectors) {
+    _modal_classCallCheck(this, Modal);
+    this.selectorName = selectors.replace("js-", "");
+    this.selectors = document.querySelectorAll(".".concat(selectors));
+    this.init();
+  }
+  _modal_createClass(Modal, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      this.selectors.forEach(function (selector, index, arr) {
+        _this.addUniqueID(selector, index);
+        _this.open(selector);
+        _this.close(selector);
+      });
+    }
+  }, {
+    key: "open",
+    value: function open(selector) {
+      var _this2 = this;
+      var button = selector.querySelector('[data-modal="button-open"]');
+      button.addEventListener("click", function (e) {
+        // changeAriaStateでariaの値を変更
+        _this2.changeAriaState(selector, true);
+        var focusableElements = selector.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length > 0) {
+          focusableElements[0].focus();
+        }
+        selector.addEventListener("keydown", function (e) {
+          return _this2.trapTabKey(selector, e);
+        });
+      });
+    }
+  }, {
+    key: "close",
+    value: function close(selector) {
+      var _this3 = this;
+      var button = selector.querySelector('[data-modal="button-close"]');
+      button.addEventListener("click", function (e) {
+        // changeAriaStateでariaの値を変更
+        _this3.changeAriaState(selector, false);
+        selector.removeEventListener("keydown", function (e) {
+          return _this3.trapTabKey(selector, e);
+        });
+      });
+    }
+  }, {
+    key: "addUniqueID",
+    value: function addUniqueID(selector, index) {
+      var dialogID = "".concat(this.selectorName, "-dialog-").concat(index);
+      var titleID = "".concat(this.selectorName, "-title-").concat(index);
+      var daialog = selector.querySelector('[role="dialog"]');
+      var title = selector.querySelector('[data-modal="title"]');
+      // id を設定
+      daialog.setAttribute("id", dialogID);
+      title.setAttribute("id", titleID);
+      // aria-labelledby 属性を設定
+      daialog.setAttribute("aria-labelledby", titleID);
+      return {
+        title: title,
+        daialog: daialog
+      };
+    }
+  }, {
+    key: "changeAriaState",
+    value: function changeAriaState(selector) {
+      // dialogのaria-modalを変更とhiddenを変更
+      var dialogElement = selector.querySelector('[role="dialog"]');
+      dialogElement.setAttribute("aria-modal", dialogElement.getAttribute("aria-modal") === "true" ? "false" : "true");
+      // hiddenがあれば削除、なければ追加
+      dialogElement.hasAttribute("hidden") ? dialogElement.removeAttribute("hidden") : dialogElement.setAttribute("hidden", "");
+    }
+  }, {
+    key: "trapTabKey",
+    value: function trapTabKey(selector, e) {
+      var focusableElements = selector.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      var firstFocusableElement = focusableElements[0];
+      var lastFocusableElement = focusableElements[focusableElements.length - 1];
+      if (e.keyCode === 9) {
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusableElement) {
+            e.preventDefault();
+            lastFocusableElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusableElement) {
+            e.preventDefault();
+            firstFocusableElement.focus();
+          }
+        }
+      }
+      if (e.keyCode === 27) {
+        this.close(selector);
+      }
+    }
+  }]);
+  return Modal;
+}();
+
 ;// CONCATENATED MODULE: ./src/index.js
+
 
 
 
@@ -643,6 +751,8 @@ new Accordion("js-accordion");
 new Accordion("js-uniqueAccordion");
 new Tab("js-tab");
 new Tab("js-uniqueTab");
+new Modal("js-modal");
+new Modal("js-uniqueModal");
 })();
 
 /******/ })()
