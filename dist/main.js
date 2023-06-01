@@ -642,6 +642,7 @@ var Tab = /*#__PURE__*/function () {
 new Accordion("js-accordion");
 new Accordion("js-uniqueAccordion");
 new Tab("js-tab");
+new Tab("js-uniqueTab");
 })();
 
 /******/ })()
