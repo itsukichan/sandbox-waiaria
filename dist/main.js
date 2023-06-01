@@ -742,7 +742,64 @@ var Modal = /*#__PURE__*/function () {
   return Modal;
 }();
 
+;// CONCATENATED MODULE: ./src/components/tooltip/_tooltip.js
+function _tooltip_typeof(obj) { "@babel/helpers - typeof"; return _tooltip_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _tooltip_typeof(obj); }
+function _tooltip_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _tooltip_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _tooltip_toPropertyKey(descriptor.key), descriptor); } }
+function _tooltip_createClass(Constructor, protoProps, staticProps) { if (protoProps) _tooltip_defineProperties(Constructor.prototype, protoProps); if (staticProps) _tooltip_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _tooltip_toPropertyKey(arg) { var key = _tooltip_toPrimitive(arg, "string"); return _tooltip_typeof(key) === "symbol" ? key : String(key); }
+function _tooltip_toPrimitive(input, hint) { if (_tooltip_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_tooltip_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var Tooltip = /*#__PURE__*/function () {
+  function Tooltip(selectors) {
+    _tooltip_classCallCheck(this, Tooltip);
+    this.selectorName = selectors.replace("js-", "");
+    this.selectors = document.querySelectorAll(".".concat(selectors, "[data-tooltip-text]"));
+    this.init();
+  }
+  _tooltip_createClass(Tooltip, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      this.selectors.forEach(function (selector, index) {
+        var tooltipId = "".concat(_this.selectorName, "-content-").concat(index);
+        _this.attachTooltipEvents(selector, tooltipId);
+      });
+    }
+  }, {
+    key: "attachTooltipEvents",
+    value: function attachTooltipEvents(elem, tooltipId) {
+      var _this2 = this;
+      elem.addEventListener("mouseenter", function (event) {
+        _this2.createTooltip(elem, tooltipId);
+      });
+      elem.addEventListener("mouseleave", function (event) {
+        _this2.removeTooltip(elem, tooltipId);
+      });
+    }
+  }, {
+    key: "createTooltip",
+    value: function createTooltip(elem, tooltipId) {
+      var tooltipText = elem.dataset.tooltipText;
+      var tooltipDiv = document.createElement("div");
+      tooltipDiv.style.position = "absolute";
+      tooltipDiv.setAttribute("role", "tooltip");
+      tooltipDiv.setAttribute("id", tooltipId);
+      tooltipDiv.innerText = tooltipText;
+      elem.appendChild(tooltipDiv);
+      elem.setAttribute("aria-describedby", tooltipId);
+    }
+  }, {
+    key: "removeTooltip",
+    value: function removeTooltip(elem, tooltipId) {
+      elem.removeChild(elem.querySelector("#".concat(tooltipId)));
+      elem.removeAttribute("aria-describedby");
+    }
+  }]);
+  return Tooltip;
+}();
+
 ;// CONCATENATED MODULE: ./src/index.js
+
 
 
 
@@ -753,6 +810,8 @@ new Tab("js-tab");
 new Tab("js-uniqueTab");
 new Modal("js-modal");
 new Modal("js-uniqueModal");
+new Tooltip("js-tooltip");
+new Tooltip("js-uniqueTooltip");
 })();
 
 /******/ })()
