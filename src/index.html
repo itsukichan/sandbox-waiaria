@@ -17,11 +17,21 @@
           <div class="componentSect__head">
             <h2 class="heading">アコーディオン</h2>
             <p class="txt">
-              トリガークラスから[js-]を取り除いた名前をユニークIDとして設定<br />
+              トリガークラスから[js-]を取り除いた名前をユニークIDとして[id]、[aria-controls]、[aria-lablledby]を設定している<br />
+              各ユニークIDは[トリガー名]-[パーツ部位]-[連番]になる<br />
               以下の例では<br />
               [js-accordion]のユニークIDは[accordion]<br />
               [js-uniqueAccordion]のユニークIDは[uniqueAccordion]<br />
-              となる。
+              となる。<br />
+              <span class="notice"
+                ><small
+                  >※トリガークラスとは、jsで取得するクラスセレクターのこと。[js-accordion]のことを指す</small
+                ></span
+              >
+            </p>
+            <p>
+              JSで動的に追加しているARIA属性<br />
+              ID: [aria-controls]、[aria-lablledby]<br />
             </p>
           </div>
           <div class="componentSect__cont">
