@@ -1,1 +1,59 @@
+.tab {
+  padding-top: 40px;
 
+  &__nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    cursor: pointer;
+    transition: all .3s linear;
+    border: none;
+    padding: .5em 1em;
+    font-size: 20px;
+    background-color: #eee;
+    position: relative;
+
+    &:hover {
+      background-color: #ddd;
+    }
+
+    &:focus {}
+  }
+
+
+  &__panel {
+    background-color: #fff;
+  }
+
+  &__inner {
+    padding: 1em;
+  }
+
+  [role="tab"] {
+    &[aria-selected="true"] {
+      background-color: #ddd;
+      pointer-events: none;
+    }
+
+    &[aria-selected="false"] {
+      background-color: #eee;
+    }
+  }
+
+  [role="tabpanel"] {
+    &[aria-hidden="false"] {
+      display: block;
+    }
+
+    &[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}

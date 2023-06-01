@@ -13,7 +13,7 @@ export default class Accordion {
 
   toggle(selector, index, arr) {
     this.addUniqueID(selector, index);
-    selector.addEventListener("click", (e) => {
+    selector.querySelector('[role="tab"]').addEventListener("click", (e) => {
       this.changeAriaState(selector, index);
 
       const panel = selector.querySelector('[role="tabpanel"]');

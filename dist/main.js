@@ -517,7 +517,7 @@ var Accordion = /*#__PURE__*/function () {
     value: function toggle(selector, index, arr) {
       var _this2 = this;
       this.addUniqueID(selector, index);
-      selector.addEventListener("click", function (e) {
+      selector.querySelector('[role="tab"]').addEventListener("click", function (e) {
         _this2.changeAriaState(selector, index);
         var panel = selector.querySelector('[role="tabpanel"]');
         var panelHeight = panel.scrollHeight;
@@ -559,14 +559,89 @@ var Accordion = /*#__PURE__*/function () {
   return Accordion;
 }();
 
+;// CONCATENATED MODULE: ./src/components/tab/_tab.js
+function _tab_typeof(obj) { "@babel/helpers - typeof"; return _tab_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _tab_typeof(obj); }
+function _tab_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _tab_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _tab_toPropertyKey(descriptor.key), descriptor); } }
+function _tab_createClass(Constructor, protoProps, staticProps) { if (protoProps) _tab_defineProperties(Constructor.prototype, protoProps); if (staticProps) _tab_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _tab_toPropertyKey(arg) { var key = _tab_toPrimitive(arg, "string"); return _tab_typeof(key) === "symbol" ? key : String(key); }
+function _tab_toPrimitive(input, hint) { if (_tab_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_tab_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var Tab = /*#__PURE__*/function () {
+  function Tab(selectors) {
+    _tab_classCallCheck(this, Tab);
+    this.selectorName = selectors.replace("js-", "");
+    this.selectors = document.querySelectorAll(".".concat(selectors));
+    this.init();
+  }
+  _tab_createClass(Tab, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      this.selectors.forEach(function (selector, index, arr) {
+        var selectorsIndex = Array.prototype.indexOf.call(arr, selector);
+        _this.tabChange(selector, index, arr, selectorsIndex);
+      });
+    }
+  }, {
+    key: "tabChange",
+    value: function tabChange(selector, index, arr, selectorsIndex) {
+      var _this2 = this;
+      this.addUniqueID(selector, index, arr, selectorsIndex);
+      var buttons = selector.querySelectorAll('[role="tab"]');
+      buttons.forEach(function (button, index) {
+        var buttonIndex = Array.prototype.indexOf.call(buttons, button);
+        var panels = selector.querySelectorAll('[role="tabpanel"]');
+        button.addEventListener("click", function (e) {
+          _this2.changeAriaState(button, buttonIndex, buttons, panels);
+        });
+      });
+    }
+  }, {
+    key: "addUniqueID",
+    value: function addUniqueID(selector, index, arr, selectorsIndex) {
+      var _this3 = this;
+      selector.querySelectorAll('[role="tab"]').forEach(function (button, index) {
+        var panel = selector.querySelectorAll('[role="tabpanel"]')[index];
+        var buttonID = "".concat(_this3.selectorName, "-button-").concat(selectorsIndex, "-").concat(index);
+        var panelID = "".concat(_this3.selectorName, "-panel-").concat(selectorsIndex, "-").concat(index);
+        button.setAttribute("id", buttonID);
+        panel.setAttribute("id", panelID);
+        button.setAttribute("aria-controls", panelID);
+        panel.setAttribute("aria-labelledby", buttonID);
+        return {
+          button: button,
+          panel: panel
+        };
+      });
+    }
+  }, {
+    key: "changeAriaState",
+    value: function changeAriaState(button, buttonIndex, buttons, panels) {
+      // クリックされたたボタンのaria-selectedとaria-hiddenの値を変更
+      // クリックされたボタン以外のボタンのaria-selectedとaria-hiddenの値を変更
+      buttons.forEach(function (button, index) {
+        if (index === buttonIndex) {
+          button.setAttribute("aria-selected", "true");
+          button.setAttribute("tabindex", "-1");
+          panels[index].setAttribute("aria-hidden", "false");
+        } else {
+          button.setAttribute("tabindex", "0");
+          button.setAttribute("aria-selected", "false");
+          panels[index].setAttribute("aria-hidden", "true");
+        }
+      });
+    }
+  }]);
+  return Tab;
+}();
+
 ;// CONCATENATED MODULE: ./src/index.js
 
 
-// import Tab from "./components/tab/_tab.js";
 
 new Accordion("js-accordion");
 new Accordion("js-uniqueAccordion");
-// new Tab(".js-tabList");
+new Tab("js-tab");
 })();
 
 /******/ })()
