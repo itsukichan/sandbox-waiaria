@@ -1,64 +1,85 @@
-.accordionList {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-
-  &>.accordion:last-child .accordion__cont {
-    border-bottom: none;
-  }
-}
-
 .accordion {
+  &__head {}
 
-  &>.accordion__head:first-child {
-    border-top: none;
-  }
-
-  &__head {
-    background-color: #f5f5f5;
-    border-top: 1px solid #ccc;
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 16px;
+    transition: all .3s linear;
+    border: none;
+    padding: .5em 1em;
+    font-size: 20px;
+    background-color: #eee;
     position: relative;
-    text-align: left;
-    transition: background-color 0.2s ease-in-out;
 
     &:hover {
-      background-color: #e0e0e0;
+      background-color: #ddd;
     }
 
-    &:focus {
-      outline: none;
-      background-color: #e0e0e0;
-    }
+    &:focus {}
+  }
 
-    &[aria-expanded="true"]::after {
-      content: "-";
+  &__icon {
+    position: absolute;
+    right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &::before,
+    &::after {
+      content: '';
       position: absolute;
+      background-color: #000;
+      transition: all .3s linear;
+      transform-origin: center;
       top: 50%;
-      right: 16px;
-      transform: translateY(-50%);
+      left: 50%;
     }
 
-    &[aria-expanded="false"]::after {
-      content: "+";
-      position: absolute;
-      top: 50%;
-      right: 16px;
-      transform: translateY(-50%);
+    &::before {
+      width: 1em;
+      height: 2px;
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    &::after {
+      width: 2px;
+      height: 1em;
+      transform: translate(-50%, -50%) rotate(0deg);
     }
   }
 
   &__cont {
     background-color: #fff;
-    border-top: 1px solid #ccc;
-    display: none;
-    padding: 16px;
-    margin-top: 0;
+  }
+
+  &__inner {
+    padding: 1em;
+  }
+
+  [role="tab"] {
+    &[aria-expanded="true"] {
+      &>* {
+        &::after {
+          transform: translate(-50%, -50%) rotate(90deg);
+        }
+      }
+    }
+  }
+
+  [role="tabpanel"] {
+    max-height: 100%;
+    transition: max-height .3s ease;
+    overflow-y: hidden;
 
     &[aria-hidden="false"] {
-      display: block;
+      max-height: 999px;
+    }
+
+    &[aria-hidden="true"] {
+      max-height: 0;
     }
   }
 }

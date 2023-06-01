@@ -32,12 +32,12 @@
 }
 
 // Utils
-div[scheme-theme="gray"] {
+div[data-scheme-theme="gray"] {
     background-color: #ccc;
     color: #333;
 }
 
-div[scheme-theme="white"] {
+div[data-scheme-theme="white"] {
     background-color: #fff;
     color: #333;
 }
