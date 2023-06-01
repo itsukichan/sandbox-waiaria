@@ -498,95 +498,62 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var Accordion = /*#__PURE__*/function () {
-  function Accordion(selector) {
+  function Accordion(selectors) {
     _classCallCheck(this, Accordion);
-    this.accordions = document.querySelectorAll(selector);
+    this.selectorName = selectors.replace("js-", "");
+    this.selectors = document.querySelectorAll(".".concat(selectors));
     this.init();
   }
   _createClass(Accordion, [{
     key: "init",
     value: function init() {
       var _this = this;
-      this.accordions.forEach(function (accordion, accordionIndex) {
-        var accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
-        accordionHeaders.forEach(function (header, headerIndex) {
-          var headerId = "header-".concat(accordionIndex, "-").concat(headerIndex);
-          var panelId = "panel-".concat(accordionIndex, "-").concat(headerIndex);
-          header.setAttribute("id", headerId);
-          header.setAttribute("aria-controls", panelId);
-          var panel = header.nextElementSibling;
-          panel.setAttribute("id", panelId);
-          panel.setAttribute("aria-labelledby", headerId);
-          header.addEventListener("click", function (event) {
-            event.preventDefault();
-            _this.toggle(header);
-          });
-          header.addEventListener("keydown", function (event) {
-            switch (event.key) {
-              case "ArrowDown":
-              case "ArrowRight":
-                _this.focusNextHeader(header);
-                event.preventDefault();
-                break;
-              case "ArrowUp":
-              case "ArrowLeft":
-                _this.focusPrevHeader(header);
-                event.preventDefault();
-                break;
-              case "Enter":
-              case " ":
-                event.preventDefault();
-                _this.toggle(header);
-                break;
-              default:
-                break;
-            }
-          });
-        });
+      this.selectors.forEach(function (selector, index, arr) {
+        _this.toggle(selector, index, arr);
       });
     }
   }, {
     key: "toggle",
-    value: function toggle(header) {
-      var currentExpanded = header.getAttribute("aria-expanded") === "true";
-      var accordion = header.parentElement;
-      var accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
-      accordionHeaders.forEach(function (otherHeader) {
-        otherHeader.setAttribute("aria-expanded", "false");
-        var otherPanel = document.getElementById(otherHeader.getAttribute("aria-controls"));
-        otherPanel.setAttribute("hidden", "");
-        otherPanel.setAttribute("aria-hidden", "true");
+    value: function toggle(selector, index, arr) {
+      var _this2 = this;
+      this.addUniqueID(selector, index);
+      selector.addEventListener("click", function (e) {
+        _this2.changeAriaState(selector, index);
+        var panel = selector.querySelector('[role="tabpanel"]');
+        var panelHeight = panel.scrollHeight;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = "".concat(panelHeight, "px");
+        }
       });
-      if (!currentExpanded) {
-        header.setAttribute("aria-expanded", "true");
-        var panel = document.getElementById(header.getAttribute("aria-controls"));
-        panel.removeAttribute("hidden");
-        panel.setAttribute("aria-hidden", "false");
-      }
     }
   }, {
-    key: "focusNextHeader",
-    value: function focusNextHeader(currentHeader) {
-      var accordion = currentHeader.parentElement;
-      var accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
-      var currentIndex = Array.from(accordionHeaders).indexOf(currentHeader);
-      if (currentIndex === accordionHeaders.length - 1) {
-        accordionHeaders[0].focus();
-      } else {
-        accordionHeaders[currentIndex + 1].focus();
-      }
+    key: "addUniqueID",
+    value: function addUniqueID(selector, index) {
+      var headerID = "".concat(this.selectorName, "-header-").concat(index);
+      var panelID = "".concat(this.selectorName, "-panel-").concat(index);
+      var header = selector.querySelector('[role="tab"]');
+      var panel = selector.querySelector('[role="tabpanel"]');
+      // id を設定
+      header.setAttribute("id", headerID);
+      panel.setAttribute("id", panelID);
+      // aria-controls aria-labelledby 属性を設定
+      header.setAttribute("aria-controls", panelID);
+      panel.setAttribute("aria-labelledby", headerID);
+      return {
+        header: header,
+        panel: panel
+      };
     }
   }, {
-    key: "focusPrevHeader",
-    value: function focusPrevHeader(currentHeader) {
-      var accordion = currentHeader.parentElement;
-      var accordionHeaders = accordion.querySelectorAll(".js-accordion-header");
-      var currentIndex = Array.from(accordionHeaders).indexOf(currentHeader);
-      if (currentIndex === 0) {
-        accordionHeaders[accordionHeaders.length - 1].focus();
-      } else {
-        accordionHeaders[currentIndex - 1].focus();
-      }
+    key: "changeAriaState",
+    value: function changeAriaState(selector, index) {
+      var tabElement = selector.querySelector('[role="tab"]');
+      var tabPanelElement = selector.querySelector('[role="tabpanel"]');
+      // aria-expanded と aria-hidden の値を反転
+      tabElement.setAttribute("aria-expanded", tabElement.getAttribute("aria-expanded") === "true" ? "false" : "true");
+      tabPanelElement.setAttribute("aria-hidden", tabPanelElement.getAttribute("aria-hidden") === "true" ? "false" : "true");
     }
   }]);
   return Accordion;
@@ -597,7 +564,8 @@ var Accordion = /*#__PURE__*/function () {
 
 // import Tab from "./components/tab/_tab.js";
 
-new Accordion(".js-accordion");
+new Accordion("js-accordion");
+new Accordion("js-uniqueAccordion");
 // new Tab(".js-tabList");
 })();
 
