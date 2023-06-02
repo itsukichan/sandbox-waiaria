@@ -15,11 +15,21 @@ export default class Tooltip {
   }
 
   attachTooltipEvents(elem, tooltipId) {
+    elem.setAttribute("aria-describedby", tooltipId);
     elem.addEventListener("mouseenter", (event) => {
       this.createTooltip(elem, tooltipId);
     });
 
     elem.addEventListener("mouseleave", (event) => {
+      this.removeTooltip(elem, tooltipId);
+    });
+
+    // 'focus'と'blur'イベントを追加
+    elem.addEventListener("focus", (event) => {
+      this.createTooltip(elem, tooltipId);
+    });
+
+    elem.addEventListener("blur", (event) => {
       this.removeTooltip(elem, tooltipId);
     });
   }
@@ -32,11 +42,12 @@ export default class Tooltip {
     tooltipDiv.setAttribute("id", tooltipId);
     tooltipDiv.innerText = tooltipText;
     elem.appendChild(tooltipDiv);
-    elem.setAttribute("aria-describedby", tooltipId);
   }
 
   removeTooltip(elem, tooltipId) {
-    elem.removeChild(elem.querySelector(`#${tooltipId}`));
-    elem.removeAttribute("aria-describedby");
+    const tooltip = elem.querySelector(`#${tooltipId}`);
+    if (tooltip) {
+      elem.removeChild(tooltip);
+    }
   }
 }

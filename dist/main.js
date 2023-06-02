@@ -769,10 +769,19 @@ var Tooltip = /*#__PURE__*/function () {
     key: "attachTooltipEvents",
     value: function attachTooltipEvents(elem, tooltipId) {
       var _this2 = this;
+      elem.setAttribute("aria-describedby", tooltipId);
       elem.addEventListener("mouseenter", function (event) {
         _this2.createTooltip(elem, tooltipId);
       });
       elem.addEventListener("mouseleave", function (event) {
+        _this2.removeTooltip(elem, tooltipId);
+      });
+
+      // 'focus'と'blur'イベントを追加
+      elem.addEventListener("focus", function (event) {
+        _this2.createTooltip(elem, tooltipId);
+      });
+      elem.addEventListener("blur", function (event) {
         _this2.removeTooltip(elem, tooltipId);
       });
     }
@@ -786,13 +795,14 @@ var Tooltip = /*#__PURE__*/function () {
       tooltipDiv.setAttribute("id", tooltipId);
       tooltipDiv.innerText = tooltipText;
       elem.appendChild(tooltipDiv);
-      elem.setAttribute("aria-describedby", tooltipId);
     }
   }, {
     key: "removeTooltip",
     value: function removeTooltip(elem, tooltipId) {
-      elem.removeChild(elem.querySelector("#".concat(tooltipId)));
-      elem.removeAttribute("aria-describedby");
+      var tooltip = elem.querySelector("#".concat(tooltipId));
+      if (tooltip) {
+        elem.removeChild(tooltip);
+      }
     }
   }]);
   return Tooltip;
